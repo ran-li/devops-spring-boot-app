@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -38,11 +39,12 @@ public class EmployeeService {
 
     public Employee createEmployee(Employee employee) {
         Assert.notNull(employee, "Employee cannot be null");
-        final Employee newEmployee = Employee.builder()
-                .firstName(employee.getFirstName())
-                .lastName(employee.getLastName())
-                .email(employee.getEmail())
-                .build();
+        final Employee newEmployee = new Employee(
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getEmail(),
+                Collections.emptyList()
+        );
         return employeeRepository.save(newEmployee);
     }
 
