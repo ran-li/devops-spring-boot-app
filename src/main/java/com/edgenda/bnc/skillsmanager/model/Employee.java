@@ -1,5 +1,6 @@
 package com.edgenda.bnc.skillsmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -24,8 +25,12 @@ public class Employee {
     @NotEmpty
     private String email;
 
+    @JsonIgnoreProperties({ "employees" })
     @ManyToMany(mappedBy = "employees")
     private List<Skill> skills;
+
+    public Employee() {
+    }
 
     public Employee(Long id, String firstName, String lastName, String email, List<Skill> skills) {
         this.id = id;

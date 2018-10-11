@@ -1,5 +1,6 @@
 package com.edgenda.bnc.skillsmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.PersistenceConstructor;
 
@@ -19,11 +20,14 @@ public class Skill {
     @NotEmpty
     private String description;
 
+    @JsonIgnoreProperties({ "skills" })
     @ManyToMany
     @JoinTable(name = "EMPLOYEES_SKILLS")
     private List<Employee> employees;
 
-    @PersistenceConstructor
+    public Skill() {
+    }
+
     public Skill(Long id, String name, String description, List<Employee> employees) {
         this.id = id;
         this.name = name;
