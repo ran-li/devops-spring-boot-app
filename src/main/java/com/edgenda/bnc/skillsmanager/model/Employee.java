@@ -27,6 +27,9 @@ public class Employee {
     @ManyToMany(mappedBy = "employees")
     private List<Skill> skills;
 
+    public Employee() {
+    }
+
     public Employee(Long id, String firstName, String lastName, String email, List<Skill> skills) {
         this.id = id;
         this.firstName = firstName;

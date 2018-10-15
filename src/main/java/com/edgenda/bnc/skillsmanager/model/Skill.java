@@ -23,7 +23,9 @@ public class Skill {
     @JoinTable(name = "EMPLOYEES_SKILLS")
     private List<Employee> employees;
 
-    @PersistenceConstructor
+    public Skill() {
+    }
+
     public Skill(Long id, String name, String description, List<Employee> employees) {
         this.id = id;
         this.name = name;
