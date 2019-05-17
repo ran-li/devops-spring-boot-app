@@ -5,11 +5,16 @@ import com.edgenda.bnc.skillsmanager.model.Skill;
 import com.edgenda.bnc.skillsmanager.repository.EmployeeRepository;
 import com.edgenda.bnc.skillsmanager.repository.SkillRepository;
 import com.edgenda.bnc.skillsmanager.service.exception.UnknownEmployeeException;
+import com.okta.jwt.AccessTokenVerifier;
+import com.okta.jwt.JwtVerifiers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
+
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,9 +33,14 @@ public class EmployeeService {
     }
 
     public Employee getEmployee(Long id) {
+        AccessTokenVerifier jwtVerifier = JwtVerifiers.accessTokenVerifierBuilder()
+                .setIssuer("https://{yourOktaDomain}/oauth2/default").setAudience("api://default") // defaults to
+                                                                                                   // 'api://default'
+                .setConnectionTimeout(Duration.ofMillis(1000)) // defaults to 1000ms
+                .setReadTimeout(Duration.ofMillis(1000)) // defaults to 1000ms
+                .build();
         Assert.notNull(id, "Employee ID cannot be null");
-        return employeeRepository.findById(id)
-                .orElseThrow(() -> new UnknownEmployeeException(id));
+        return employeeRepository.findById(id).orElseThrow(() -> new UnknownEmployeeException(id));
     }
 
     public List<Employee> getEmployees() {
@@ -39,12 +49,8 @@ public class EmployeeService {
 
     public Employee createEmployee(Employee employee) {
         Assert.notNull(employee, "Employee cannot be null");
-        final Employee newEmployee = new Employee(
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getEmail(),
-                Collections.emptyList()
-        );
+        final Employee newEmployee = new Employee(employee.getFirstName(), employee.getLastName(), employee.getEmail(),
+                Collections.emptyList());
         return employeeRepository.save(newEmployee);
     }
 
