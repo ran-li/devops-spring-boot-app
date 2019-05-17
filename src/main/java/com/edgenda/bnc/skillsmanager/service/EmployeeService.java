@@ -60,6 +60,6 @@ public class EmployeeService {
 
     public void deleteEmployee(Long id) {
         Assert.notNull(id, "ID cannot be null");
-        employeeRepository.delete(id);
+        employeeRepository.deleteById(id);
     }
 }
