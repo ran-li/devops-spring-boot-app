@@ -22,7 +22,7 @@ public class Skill {
 
     @ManyToMany
     @JoinTable(name = "EMPLOYEES_SKILLS")
-    @JsonIgnoreProperties("skills")
+    @JsonIgnore
     private List<Employee> employees;
 
     public Skill() {
